@@ -87,6 +87,14 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+    token: "8400504f285d4dd982780cafaa7b542e"
+    // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                        
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -99,9 +107,121 @@
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
-
+    
     // Start your code here
     // You may move this JS to another file if you wish
+
+    errorBtns[0].addEventListener("click", function() {
+      console.log("Console Log Demo");
+    });
+    errorBtns[1].addEventListener("click", function() {
+      console.error("Error here: error prompt");
+    });
+    errorBtns[2].addEventListener("click", function() {
+      console.count("Count button: ");
+    });
+    errorBtns[3].addEventListener("click", function() {
+      console.warn("Console warm button");
+    });
+
+    errorBtns[4].addEventListener("click", function() {
+      let number = 2;
+      console.log('the # is ' + number);
+      const errorMsg = 'The number doesn\'t equal to 3';
+      console.assert(number == 3, {number: number, errorMsg: errorMsg});
+      console.assert("number:2, errorMessage: ");
+    });
+    errorBtns[5].addEventListener("click", function() {
+      console.clear();
+    });
+    errorBtns[6].addEventListener("click", function() {
+      console.dir(errorBtns[6]);
+    });
+    errorBtns[7].addEventListener("click", function() {
+      console.dirxml(errorBtns[7]);
+    });
+    errorBtns[8].addEventListener("click", function() {
+      console.group();
+    });
+    errorBtns[9].addEventListener("click", function() {
+      console.groupEnd();
+    });
+    errorBtns[10].addEventListener("click", function() {
+      console.table([
+        {
+          first: 'Ray',
+          last: 'Brooklyn',
+          PID: 'A1234567890',
+        },
+        {
+          first: 'Annie',
+          last: 'Scarlet',
+          PID: 'A4567891023',
+        },
+        {
+          first: 'Cole',
+          last: 'Mailhot',
+          PID: 'A432567890',
+        }
+      ]);
+    });
+    errorBtns[11].addEventListener("click", function() {
+      console.time();
+    });
+    errorBtns[12].addEventListener("click", function() {
+      console.timeEnd();
+    });
+    errorBtns[13].addEventListener("click", function() {
+      const handleBtnClick = () => { deep(); };
+      const deep = () => { deeper(); };
+      const deeper = () => { deepest(); };
+      const deepest = () => { console.trace(); };
+      handleBtnClick();
+    });
+
+    //Step 3: try/catch
+    let calculateButton = document.querySelector("#calculate");
+    
+    calculateButton.addEventListener("click", function() {
+      let firstNum = document.querySelector('#first-num').value;
+      let secondNum = document.querySelector('#second-num').value;
+      let output = document.querySelector('output');
+      try{
+        console.log(firstNum);
+        console.log(typeof(firstNum));
+        if(isNaN(firstNum)){
+          throw new Error("Number entry error: the first number has to be a number.")
+        }
+      }catch(Error){
+        alert("Try another number for the first entry.");
+      }finally{
+        alert("Result is generated.");
+      }
+
+      //Step 4: Extending error
+      class ValidationError extends Error {
+        constructor(message) {
+          super(message);
+          this.name = "Second entry";
+        }
+      }
+      function test() {
+        if(isNaN(secondNum)){
+          throw new ValidationError("Number entry error: the second number has to be a number.")
+        }
+      }
+      try {
+        test();
+      }catch(err) {
+        alert(err.message);
+        alert("Reenter: " + err.name);
+      }
+    });
+    
+    //Step 5: Trigger a Global Error
+    errorBtns[14].addEventListener("click", function() {
+      TrackJS.track('Testing TrackJS!');
+    });
   </script>
 </body>
 
